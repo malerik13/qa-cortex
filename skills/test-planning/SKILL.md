@@ -27,9 +27,9 @@ If <TICKET>-ID in message → use it. Else STOP, ask: «Какой тикет? �
 
 ```
 PARALLEL tool calls in one message:
-- mcp__plugin_qa-cortex_<ticketing>__get_ticket(ticket_id="<TICKET>-XXXXX")
-- mcp__plugin_qa-cortex_<ticketing>__get_comments(ticket_id="<TICKET>-XXXXX", max_results=20)
-- mcp__plugin_qa-cortex_allure__find_test_cases_by_issue(
+- mcp__qa_cortex_ticketing__get_ticket(ticket_id="<TICKET>-XXXXX")
+- mcp__qa_cortex_ticketing__get_comments(ticket_id="<TICKET>-XXXXX", max_results=20)
+- mcp__qa_cortex_test_mgmt__find_cases_by_linked_ticket(
     issue_id="<TICKET>-XXXXX",
     include_scenario=true     ← MANDATORY (boolean)
   )

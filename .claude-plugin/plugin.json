@@ -1,6 +1,6 @@
 {
   "name": "qa-cortex",
-  "version": "0.0.1-alpha",
+  "version": "0.0.5-alpha",
   "description": "Senior QA co-engineer for any stack. Trust-tiered, with flow cache + product map. Pluggable providers (Jira, TestRail, Confluence, Slack, Playwright). Status: alpha, in development.",
   "author": {
     "name": "Yaroslav Shcherbinsky",
@@ -9,6 +9,34 @@
   "homepage": "https://github.com/malerik13/qa-cortex",
   "license": "MIT",
 
-  "_comment_mcp_servers": "Provider adapter MCP servers will be added in Phase 2. For now, instance-level MCP setup is manual via Claude Code's claude mcp add.",
-  "mcpServers": {}
+  "mcpServers": {
+    "qa_cortex_ticketing": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python",
+      "args": ["-m", "qa_cortex.servers.ticketing_server"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "qa_cortex_test_mgmt": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python",
+      "args": ["-m", "qa_cortex.servers.test_mgmt_server"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "qa_cortex_docs": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python",
+      "args": ["-m", "qa_cortex.servers.docs_server"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "qa_cortex_chat": {
+      "command": "${CLAUDE_PLUGIN_ROOT}/.venv/bin/python",
+      "args": ["-m", "qa_cortex.servers.chat_server"],
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
 }

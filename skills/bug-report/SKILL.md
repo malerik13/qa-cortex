@@ -19,7 +19,7 @@ This skill organizes the flow into 5 phases: **A) Prepare → B) Classify → C)
 Gather (one-by-one only if missing from context / `qa-output/*.md`):
 
 ```
-☐ Parent User Story (<TICKET>-X — find via <ticketing>:search_tickets if not given)
+☐ Parent User Story (<TICKET>-X — find via qa-cortex ticketing:search_tickets if not given)
 ☐ Environment (staging | staging-ca | release | release-ca | demo | prod)
 ☐ Steps to reproduce (exact clicks/actions, no shortcuts)
 ☐ Expected per AC (cite AC verbatim if possible)
@@ -73,7 +73,7 @@ Surface the walked reasoning briefly (1-2 lines), not just the final value.
 ## Phase C — Preview (no submit)
 
 ```
-mcp__plugin_qa-cortex_<ticketing>__create_bug(
+mcp__qa_cortex_ticketing__create_ticket(
   parent_trd     = "<TICKET>-XXXXX",
   summary        = "<verb + object + condition>",
   description    = "<full EN body, env links inline, visual evidence refs>",
@@ -116,7 +116,7 @@ Possible responses + actions:
 
 On approval:
 ```
-mcp__plugin_qa-cortex_<ticketing>__create_bug(
+mcp__qa_cortex_ticketing__create_ticket(
   ...same fields as Phase C...,
   approved = true
 )
@@ -164,6 +164,6 @@ Journal: записал в `journal/<DATE>.md`.
 ## Failure modes
 
 - **`qa-orchestra:bug-reporter` not loaded** → draft inline per CLAUDE.md template, skip optional delegation in Phase A.
-- **`create_bug` returns 401/5xx** → tell Yaroslav, log as failed attempt, retry once after pause.
+- **`create_ticket` returns 401/5xx** → tell Yaroslav, log as failed attempt, retry once after pause.
 - **Duplicate warning** → present similar bug to Yaroslav: link as Duplicate / file separate symptom (`force=true`) / cancel.
 - **Custom-field commands fail post-create** → bug exists but fields wrong; tell Yaroslav, give URL for manual fix.

@@ -39,10 +39,10 @@ scripts/journal.sh mission "{INTENT} <TICKET>-{ID}"
 
 ```
 SINGLE message, 4 parallel tool_use blocks:
-  block 1: mcp__plugin_qa-cortex_<ticketing>__get_ticket(ticket_id="<TICKET>-XXXXX")
-  block 2: mcp__plugin_qa-cortex_<ticketing>__get_linked_tickets(ticket_id="<TICKET>-XXXXX")
-  block 3: mcp__plugin_qa-cortex_<ticketing>__get_comments(ticket_id="<TICKET>-XXXXX", max_results=50)
-  block 4: mcp__plugin_qa-cortex_allure__find_test_cases_by_issue(
+  block 1: mcp__qa_cortex_ticketing__get_ticket(ticket_id="<TICKET>-XXXXX")
+  block 2: mcp__qa_cortex_ticketing__get_linked_tickets(ticket_id="<TICKET>-XXXXX")
+  block 3: mcp__qa_cortex_ticketing__get_comments(ticket_id="<TICKET>-XXXXX", max_results=50)
+  block 4: mcp__qa_cortex_test_mgmt__find_cases_by_linked_ticket(
              issue_id="<TICKET>-XXXXX",
              include_scenario=true     ← MANDATORY (boolean true, NOT string "true")
            )
@@ -203,7 +203,7 @@ This is the most-skipped step. **NO silent reasoning** — call tool OR surface 
 
 ```
 STOP — call tool:
-  mcp__plugin_qa-cortex_<ticketing>__find_qa_subtasks(parent_id="<TICKET>-XXXXX")
+  mcp__qa_cortex_ticketing__search_tickets(parent_id="<TICKET>-XXXXX")
 ```
 
 ```
@@ -235,7 +235,7 @@ Skip the tool call (correct — tool returns empty for non-User-Story parents). 
 
 If decision = `create new`:
 ```
-mcp__plugin_qa-cortex_<ticketing>__create_qa_subtask(
+mcp__qa_cortex_ticketing__create_ticket(
   parent_id="<TICKET>-XXXXX"
   # NO approved param yet → returns preview
 )
@@ -247,7 +247,7 @@ STOP — show preview to Yaroslav. Wait for "да create" / "yes create".
 
 On approval:
 ```
-mcp__plugin_qa-cortex_<ticketing>__create_qa_subtask(
+mcp__qa_cortex_ticketing__create_ticket(
   parent_id="<TICKET>-XXXXX",
   approved=true
 )
@@ -258,7 +258,7 @@ Then journal:
 scripts/journal.sh log "Created QA subtask <NEW-TRD> for <TICKET>-XXXXX (Phase 1.5)"
 ```
 
-**Forbidden in this step:** writing «QA subtask exists (<TICKET>-X)» in chat without first calling `find_qa_subtasks`. Tool call is the audit trail.
+**Forbidden in this step:** writing «QA subtask exists (<TICKET>-X)» in chat without first calling `search_tickets`. Tool call is the audit trail.
 
 ---
 
@@ -421,7 +421,7 @@ Without this — morning standup doesn't see the evidence chain. **Forbidden:** 
 ### 8b — Status transition (if applicable)
 
 ```
-mcp__plugin_qa-cortex_<ticketing>__update_ticket_status(...)
+mcp__qa_cortex_ticketing__transition_ticket(...)
   # preview without approved → ask → approved=true
 ```
 
@@ -440,11 +440,11 @@ scripts/journal.sh save
 ## Hard rules
 
 1. **Pre-load context BEFORE Phase 1.5** — Step 3 is non-negotiable. qa-orchestra agents (if used later) need intake.md.
-2. **`include_scenario=true` MANDATORY** for `find_test_cases_by_issue` — without it brain sees case names, not steps. Boolean `true`, not string `"true"`.
+2. **`include_scenario=true` MANDATORY** for `find_cases_by_linked_ticket` — without it brain sees case names, not steps. Boolean `true`, not string `"true"`.
 3. **Phase 1.5 = HARD CHECKPOINT** — see Step 5 STOP gates. Tool call > textual reasoning.
 4. **Approval gate before Phase 2** — Yaroslav reviews Cockpit first.
 5. **No UI invention** — see CLAUDE.md anti-pattern #6 (verify ladder).
-6. **Honest gaps.** If `find_test_cases_by_issue` returns empty → «no <test-mgmt> cases linked», don't fabricate.
+6. **Honest gaps.** If `find_cases_by_linked_ticket` returns empty → «no <test-mgmt> cases linked», don't fabricate.
 7. **Bugs index grep-only** — never `Read knowledge_base/bugs.json` (3.6 MB).
 8. **Journal every milestone:** intake done / Phase 1.5 done / Phase 3 case results.
 9. **1st cohort verbatim ask** — only at bug-filing time (see CLAUDE.md anti-pattern #5), not in this skill.

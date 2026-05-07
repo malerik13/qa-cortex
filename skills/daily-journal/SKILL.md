@@ -45,7 +45,7 @@ Format: short, factual, action verb + <TICKET>-ID + outcome.
 journal.sh bug <TICKET>-XXXXX "<title from bug body>" <env> "<tags-csv-or-empty>"
 ```
 
-Triggered automatically by bug-report skill Step 4 after `create_bug` returns the new <TICKET>-ID.
+Triggered automatically by bug-report skill Step 4 after `create_ticket` returns the new <TICKET>-ID.
 
 ## Disallow-list — these go to `dev-log`, NOT `log`
 
