@@ -114,12 +114,69 @@ class TestChatProvider:
 
 
 class TestLoadProvider:
-    """Verify dispatch function signature is reserved."""
+    """Verify dispatch function works post-Phase 2 Step 7."""
 
-    def test_raises_not_implemented_phase_a(self) -> None:
-        # Phase 2 Step 1 — stub returns informative NotImplementedError
-        with pytest.raises(NotImplementedError, match="not yet implemented"):
-            load_provider("ticketing", {})
+    def test_dispatches_jira(self) -> None:
+        from unittest.mock import patch
+
+        config = {
+            "providers": {"ticketing": "jira"},
+            "ticketing": {
+                "jira": {
+                    "url": "https://test.atlassian.net",
+                    "email": "test@example.com",
+                    "api_token": "fake",
+                    "ticket_prefix": "TEST",
+                    "default_project_key": "TEST",
+                }
+            },
+        }
+
+        with patch("qa_cortex.providers.jira.Jira"):
+            provider = load_provider("ticketing", config)
+
+        from qa_cortex.providers.jira import JiraProvider
+        assert isinstance(provider, JiraProvider)
+
+    def test_dispatches_testrail(self) -> None:
+        from unittest.mock import patch
+
+        config = {
+            "providers": {"test_management": "testrail"},
+            "test_management": {
+                "testrail": {
+                    "url": "https://test.testrail.io",
+                    "username": "u",
+                    "api_key": "k",
+                    "project_id": 1,
+                    "linked_ticket_field": "custom_jira_id",
+                }
+            },
+        }
+
+        with patch("qa_cortex.providers.testrail.TestRailAPI"):
+            provider = load_provider("test_management", config)
+
+        from qa_cortex.providers.testrail import TestRailProvider
+        assert isinstance(provider, TestRailProvider)
+
+    def test_browser_returns_none(self) -> None:
+        # Playwright is handled by Claude Code's built-in MCP — provider dispatch returns None
+        config = {"providers": {"browser": "playwright"}}
+        result = load_provider("browser", config)
+        assert result is None
+
+    def test_unknown_category_raises(self) -> None:
+        with pytest.raises(ValueError, match="not in config"):
+            load_provider("ticketing", {"providers": {}})
+
+    def test_youtrack_raises_import_error_with_helpful_msg(self) -> None:
+        config = {
+            "providers": {"ticketing": "youtrack"},
+            "ticketing": {"youtrack": {"url": "x"}},
+        }
+        with pytest.raises(ImportError, match="YouTrackProvider not in qa-cortex"):
+            load_provider("ticketing", config)
 
 
 class TestApprovalGatePattern:

@@ -636,11 +636,80 @@ def load_provider(category: str, config: dict[str, Any]) -> Any:
 
     Raises:
         ValueError: if category unknown or provider name unrecognized.
-        ImportError: if provider module not installed (e.g. user picked Linear
-            but linear adapter not yet implemented).
+        ImportError: if provider module not installed.
     """
-    # NOTE: Phase 2 Step 2+ implementation. Stub for now.
-    raise NotImplementedError(
-        f"load_provider({category!r}, ...) is not yet implemented. "
-        f"Phase 2 Step 2 will add concrete provider modules + dispatch."
+    if "providers" not in config:
+        raise ValueError("Config missing 'providers' section")
+
+    selected = config["providers"].get(category)
+    if not selected:
+        raise ValueError(f"Category {category!r} not in config['providers']")
+
+    provider_config = config.get(category, {}).get(selected, {})
+
+    if category == "ticketing":
+        if selected == "jira":
+            from .jira import JiraProvider
+            return JiraProvider(provider_config)
+        elif selected == "linear":
+            try:
+                from .linear import LinearProvider  # type: ignore
+            except ImportError as e:
+                raise ImportError(
+                    "LinearProvider not yet implemented. Phase 2 Step 2 covers Jira; "
+                    "Linear adapter is Phase 3+ work or community contribution."
+                ) from e
+            return LinearProvider(provider_config)
+        elif selected == "github":
+            try:
+                from .github import GitHubProvider  # type: ignore
+            except ImportError as e:
+                raise ImportError(
+                    "GitHubProvider not yet implemented. Phase 2 Step 2 covers Jira; "
+                    "GitHub adapter is community contribution work."
+                ) from e
+            return GitHubProvider(provider_config)
+        elif selected == "youtrack":
+            try:
+                from .youtrack import YouTrackProvider  # type: ignore
+            except ImportError as e:
+                raise ImportError(
+                    "YouTrackProvider not in qa-cortex (lives in private "
+                    "scalefinal-qa-assistant repo). To use YouTrack, copy the "
+                    "youtrack.py from scalefinal-qa-assistant or write your own."
+                ) from e
+            return YouTrackProvider(provider_config)
+
+    elif category == "test_management":
+        if selected == "testrail":
+            from .testrail import TestRailProvider
+            return TestRailProvider(provider_config)
+        elif selected == "allure":
+            try:
+                from .allure import AllureProvider  # type: ignore
+            except ImportError as e:
+                raise ImportError(
+                    "AllureProvider not in qa-cortex (private scalefinal repo). "
+                    "Copy from there or implement against TestManagementProvider Protocol."
+                ) from e
+            return AllureProvider(provider_config)
+
+    elif category == "documentation":
+        if selected == "confluence":
+            from .confluence import ConfluenceProvider
+            return ConfluenceProvider(provider_config)
+
+    elif category == "chat":
+        if selected == "slack":
+            from .slack import SlackProvider
+            return SlackProvider(provider_config)
+
+    elif category == "browser":
+        # Playwright handled by Claude Code's built-in Playwright MCP, not via Python provider.
+        # Return None — caller knows browser ops use mcp__playwright__* tools directly.
+        return None
+
+    raise ValueError(
+        f"Unknown category={category!r} or provider={selected!r}. "
+        f"See qa_cortex.config.VALID_PROVIDER_VALUES for valid combinations."
     )
