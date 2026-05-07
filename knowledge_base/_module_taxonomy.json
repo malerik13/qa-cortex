@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "description": "Hand-curated module taxonomy for Product Map classification. Customize per your product. Replace examples below with your actual modules.",
+  "default_module": "misc",
+  "min_classification_score": 2,
+  "modules": {
+    "auth": {
+      "name": "Authentication & Session",
+      "description": "Login, 2FA, password reset, sessions, tokens. Universal across products.",
+      "keywords": ["login", "logout", "2fa", "password", "session", "token", "auth", "signin"],
+      "ui_areas": ["Login page", "Profile menu"],
+      "db_tables": ["users", "sessions"],
+      "synonyms": ["authentication", "sign-in"]
+    },
+    "{your-module-1}": {
+      "name": "{Your Module Name}",
+      "description": "Replace with description of this product area.",
+      "keywords": ["keyword1", "keyword2", "keyword3"],
+      "ui_areas": ["UI section name"],
+      "db_tables": ["table_name"],
+      "synonyms": ["alt_term"]
+    },
+    "{your-module-2}": {
+      "name": "{Your Module 2 Name}",
+      "description": "...",
+      "keywords": [],
+      "ui_areas": [],
+      "db_tables": [],
+      "synonyms": []
+    },
+    "infra": {
+      "name": "Infrastructure & Performance",
+      "description": "Performance, deploy, environments, schema drift. Useful for most products.",
+      "keywords": ["performance", "latency", "timeout", "deploy", "infrastructure", "environment", "migration"],
+      "ui_areas": [],
+      "db_tables": [],
+      "synonyms": ["devops", "platform"]
+    },
+    "misc": {
+      "name": "Miscellaneous / Cross-cutting",
+      "description": "Catch-all for entries that span multiple modules or don't fit cleanly. Aim for <30% of entries here — if higher, taxonomy needs more keywords.",
+      "keywords": [],
+      "ui_areas": [],
+      "db_tables": [],
+      "synonyms": []
+    }
+  },
+  "ambiguity_rules": [
+    {
+      "description": "Example: when X table is referenced in auth context → auth module, in business context → business module",
+      "decision": "use surrounding text context"
+    }
+  ],
+  "_setup_notes": [
+    "1. Replace {your-module-N} with actual product modules (e.g. for SaaS: 'subscriptions', 'billing', 'integrations')",
+    "2. Add 6-12 modules total. Too few = misc bucket overflows. Too many = classification ambiguity.",
+    "3. Each module needs 5-15 keywords + synonyms for reliable scoring.",
+    "4. Run scripts/refresh-product-map.py and check unclassified rate. <10% = good, >30% = expand keywords.",
+    "5. Iterate — taxonomy is living document, evolves as product evolves.",
+    "6. See knowledge_base/_module_taxonomy.json (in source ScaleFinal repo) for working example with 12 modules."
+  ]
+}

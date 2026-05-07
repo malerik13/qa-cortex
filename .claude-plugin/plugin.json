@@ -1,0 +1,14 @@
+{
+  "name": "qa-cortex",
+  "version": "0.0.1-alpha",
+  "description": "Senior QA co-engineer for any stack. Trust-tiered, with flow cache + product map. Pluggable providers (Jira, TestRail, Confluence, Slack, Playwright). Status: alpha, in development.",
+  "author": {
+    "name": "Yaroslav Shcherbinsky",
+    "email": "196560045+malerik13@users.noreply.github.com"
+  },
+  "homepage": "https://github.com/malerik13/qa-cortex",
+  "license": "MIT",
+
+  "_comment_mcp_servers": "Provider adapter MCP servers will be added in Phase 2. For now, instance-level MCP setup is manual via Claude Code's claude mcp add.",
+  "mcpServers": {}
+}
