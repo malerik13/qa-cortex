@@ -30,7 +30,7 @@ Combined: **~77% reduction** in per-session token cost vs unaided baseline.
 
 ## Status
 
-**🚧 alpha — Phase 2 complete**
+**🚧 alpha — Phase 3 complete**
 
 What works:
 - ✅ Adapter framework (4 Provider Protocol contracts)
@@ -38,15 +38,17 @@ What works:
 - ✅ Config-driven provider dispatch
 - ✅ MCP servers exposing provider methods to brain
 - ✅ Skills refactored to provider-agnostic tool names
-- ✅ Setup wizard CLI
+- ✅ Setup wizard CLI (`python scripts/setup.py`)
 - ✅ 78 unit tests + integration test scaffold
+- ✅ Full documentation: architecture, trust tiering, adding providers, full walkthrough
 
 What's pending:
-- ⏳ Real-instance validation (Phase 4)
+- ⏳ Real-instance validation — two independent installers (Phase 4)
 - ⏳ Linear / GitHub / Notion / Teams adapters (community contributions)
 - ⏳ Public release decision (Phase 5)
 
 See [`knowledge_base/design_docs/qa_cortex_v1.md`](knowledge_base/design_docs/qa_cortex_v1.md) for full architecture.
+Phase 4 roadmap: [`knowledge_base/design_docs/phase_4_roadmap.md`](knowledge_base/design_docs/phase_4_roadmap.md).
 
 ---
 
@@ -127,6 +129,7 @@ See [`docs/architecture.md`](docs/architecture.md) for deep-dive.
 | [`docs/testing.md`](docs/testing.md) | Test strategy + integration test setup |
 | [`examples/jira-testrail.md`](examples/jira-testrail.md) | Full walkthrough on default stack |
 | [`knowledge_base/design_docs/`](knowledge_base/design_docs/) | Architectural decision records |
+| [`knowledge_base/design_docs/phase_4_roadmap.md`](knowledge_base/design_docs/phase_4_roadmap.md) | Phase 4 validation plan — what to do before v1.0.0-rc1 |
 
 ---
 
