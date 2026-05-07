@@ -1,0 +1,76 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qa-cortex"
+version = "0.0.1-alpha"
+description = "Senior QA co-engineer for any stack. Trust-tiered, with flow cache + product map."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Yaroslav Shcherbinsky", email = "196560045+malerik13@users.noreply.github.com"}
+]
+keywords = ["qa", "testing", "ai-agent", "claude-code", "automation"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+
+# Phase 2 Step 1: minimal deps for Protocol layer
+# Concrete provider deps added in Step 2+ as optional extras
+dependencies = []
+
+[project.optional-dependencies]
+# Optional extras — installed per chosen provider
+# pip install "qa-cortex[jira]" etc.
+jira = []         # to be filled Phase 2 Step 2 (atlassian-python-api or similar)
+testrail = []     # Phase 2
+confluence = []   # Phase 2 (likely subset of jira deps via mcp-atlassian)
+slack = []        # Phase 2
+playwright = []   # Phase 2
+all = []          # Phase 2 — meta-extra
+
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+    "mypy>=1.8",
+]
+
+[project.urls]
+Homepage = "https://github.com/malerik13/qa-cortex"
+Repository = "https://github.com/malerik13/qa-cortex"
+Issues = "https://github.com/malerik13/qa-cortex/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qa_cortex*"]
+exclude = ["tests*", "docs*", "examples*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "SIM"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+asyncio_mode = "auto"
