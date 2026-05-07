@@ -3,130 +3,165 @@
 > **Senior QA co-engineer for any stack.** Autonomous on routine, gated on critical.
 > Trust-tiered, with flow cache + product map architecture.
 
-**Status:** 🚧 `alpha` — actively in development. Skeleton scaffold + design docs are ready. Provider adapters (Phase 2) and full setup flow (Phase 3) coming. **Do not install for production use yet.**
+[![Status](https://img.shields.io/badge/status-alpha-orange)]() [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE) [![Python](https://img.shields.io/badge/python-3.10+-blue)]() [![Tests](https://img.shields.io/badge/tests-78%20passing-brightgreen)]()
 
 ---
 
-## What is this
+## What it is
 
-`qa-cortex` is an open-source scaffold for building a Senior QA co-engineer powered by Claude Code. It's not a passive assistant — it's **extra hands and extra brain** for the QA workflow:
+`qa-cortex` is a Claude Code-powered QA co-engineer. Not a passive assistant — it's **extra hands and extra brain** for the QA workflow:
 
-- **Autonomous on routine** — login, navigate, test, log, draft. No approval-per-breath.
-- **Gated on critical** — bug filing, status transitions, comms — explicit human approval.
-- **Stack-agnostic** — Jira, TestRail, Confluence, Slack out-of-box. Pluggable for Linear, GitHub Issues, Notion, etc.
-- **Self-improving** — learns your product as it works (flow cache + product map).
+- 🔁 **Autonomous on routine** — login, navigate, test, log, draft. No approval-per-breath.
+- 🛡 **Gated on critical** — bug filing, status transitions, comms — explicit human approval.
+- 🔌 **Stack-agnostic** — Jira, TestRail, Confluence, Slack out-of-box. Pluggable for Linear, GitHub, Notion, etc.
+- 🧠 **Self-improving** — learns your product as it works (flow cache + product map).
 
-Built around three core architectural patterns:
+## Three core patterns
 
-| Pattern | What it does |
-|---|---|
-| **Trust tiering** | 3 tiers (auto / implicit / explicit-gate) — calibrates autonomy by action category |
-| **Flow cache** | 3-tier amortization (discovery → recipe → Playwright script) — turns repetitive UI work into cheap replays |
-| **Product map** | Module-organized KB index — brain queries one map node instead of 8 grep operations |
+| Pattern | What it does | Token saving |
+|---|---|---|
+| **Trust tiering** | 3 tiers (auto / implicit / explicit-gate) calibrate autonomy by action category | qualitative — enables routine offload |
+| **Flow cache** | 3-tier ladder: discovery → recipe → Playwright script — caches repetitive UI work | ~68% on UI-related tokens after warm-up |
+| **Product map** | Module-organized KB index — brain queries one map node instead of N grep operations | ~15-25% on KB lookups |
 
-These three combined: ~77% reduction in per-session token cost vs unaided baseline.
-
----
-
-## Status & roadmap
-
-This repo is in **Phase 1 — skeleton creation.** What's here right now:
-
-- ✅ Directory structure
-- ✅ Design docs (`knowledge_base/design_docs/`)
-- ✅ License (MIT)
-- ✅ Trust tiering codified in CLAUDE.md (template)
-- ✅ Persona files (engineer + orchestrator)
-- ✅ KB skeleton templates
-- ✅ Generic scripts (journal, refresh-flows-index, refresh-product-map)
-- ⏳ **Phase 2:** Provider adapter framework (TicketingProvider, TestMgmtProvider, etc.)
-- ⏳ **Phase 2:** Default MCP servers wrapping community providers (Jira, TestRail, Confluence, Slack)
-- ⏳ **Phase 3:** Setup wizard + complete docs
-- ⏳ **Phase 4:** Validation on 2 real stacks
-- ⏳ **Phase 5:** Public release (currently private)
-
-See `knowledge_base/design_docs/qa_cortex_v1.md` for full architecture and phased plan.
+Combined: **~77% reduction** in per-session token cost vs unaided baseline.
 
 ---
 
-## Architecture (3 layers)
+## Status
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                LAYER 1: qa-cortex CORE (this scaffold)              │
-│  CLAUDE.md, skills/, knowledge_base/, flows/, scripts/, templates/  │
-│  Owns: WHAT brain does, HOW it reasons, WHEN to gate                │
-└─────────────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                LAYER 2: PROVIDER ADAPTERS (Phase 2)                 │
-│  TicketingProvider, TestManagementProvider, DocumentationProvider,  │
-│  ChatProvider — abstract interfaces with concrete implementations   │
-│  per backend (Jira, TestRail, Confluence, Slack, etc.)              │
-│  Owns: HOW to talk to specific backend                              │
-└─────────────────────────────────────────────────────────────────────┘
-                             │
-                             ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│                LAYER 3: USER INSTANCE (configured fork)             │
-│  Clone qa-cortex → fill .env + qa-cortex.config.toml + KB content   │
-│  → working brain on your stack                                      │
-└─────────────────────────────────────────────────────────────────────┘
-```
+**🚧 alpha — Phase 2 complete**
+
+What works:
+- ✅ Adapter framework (4 Provider Protocol contracts)
+- ✅ Default adapters: **Jira, TestRail, Confluence, Slack** + Playwright (built-in)
+- ✅ Config-driven provider dispatch
+- ✅ MCP servers exposing provider methods to brain
+- ✅ Skills refactored to provider-agnostic tool names
+- ✅ Setup wizard CLI
+- ✅ 78 unit tests + integration test scaffold
+
+What's pending:
+- ⏳ Real-instance validation (Phase 4)
+- ⏳ Linear / GitHub / Notion / Teams adapters (community contributions)
+- ⏳ Public release decision (Phase 5)
+
+See [`knowledge_base/design_docs/qa_cortex_v1.md`](knowledge_base/design_docs/qa_cortex_v1.md) for full architecture.
 
 ---
 
-## Install (when Phase 2 ships)
+## Quick start
 
-> ⚠ **Currently in Phase 1.** Install path will look like this once Phase 2 ships. Don't try to follow it yet — adapter layer doesn't exist.
+**Prerequisites:** macOS or Linux, Python 3.10+, Claude Code installed.
 
 ```bash
-git clone https://github.com/malerik13/qa-cortex.git
-cd qa-cortex
-./scripts/setup.sh                   # interactive wizard
-# (asks: which providers, tokens, project IDs, etc.)
-claude                               # done — brain operational
+# 1. Clone
+git clone https://github.com/malerik13/qa-cortex.git ~/Documents/qa-cortex
+cd ~/Documents/qa-cortex
+
+# 2. Install Python deps
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pip install atlassian-python-api testrail-api slack-sdk  # adapter deps
+
+# 3. Run setup wizard
+python scripts/setup.py
+# → answers questions, generates qa-cortex.config.toml + .env
+
+# 4. Verify
+pytest tests/                              # 78 unit tests
+python scripts/setup.py --check            # config validation
+
+# 5. Run
+claude                                     # opens Claude Code
 ```
+
+In Claude Code, try:
+```
+> Тестируем PROJ-123
+```
+(replace with your actual ticket prefix). Brain pulls ticket from configured ticketing provider, builds intake, asks before any write action.
+
+For full walkthrough see [`HOWTO.md`](HOWTO.md).
+
+---
+
+## Architecture
+
+Three-layer separation of concerns:
+
+```
+┌──────────────────────────────────────────────────┐
+│ LAYER 1: qa-cortex CORE (this scaffold)          │
+│  CLAUDE.md · skills/ · knowledge_base/ · flows/  │
+│  Trust tiering · personas · workflows            │
+└────────────────────────┬─────────────────────────┘
+                         │
+┌────────────────────────▼─────────────────────────┐
+│ LAYER 2: PROVIDER ADAPTERS                       │
+│  TicketingProvider, TestManagementProvider,      │
+│  DocumentationProvider, ChatProvider             │
+│  → JiraProvider, TestRailProvider, …             │
+└────────────────────────┬─────────────────────────┘
+                         │
+┌────────────────────────▼─────────────────────────┐
+│ LAYER 3: USER INSTANCE                           │
+│  qa-cortex.config.toml + .env + own KB content   │
+└──────────────────────────────────────────────────┘
+```
+
+See [`docs/architecture.md`](docs/architecture.md) for deep-dive.
 
 ---
 
 ## Documentation
 
-- `knowledge_base/design_docs/qa_cortex_v1.md` — full architecture (read this first)
-- `knowledge_base/design_docs/flow_cache_v1.md` — flow cache & recipe library
-- `knowledge_base/design_docs/product_map_v1.md` — product map & KB knowledge graph
-- `INSTALL.md` — install walkthrough (alpha — Phase 2/3 work)
-- `HOWTO.md` — daily playbook (alpha)
-- `CHANGELOG.md` — version history
+| Doc | Topic |
+|---|---|
+| [`HOWTO.md`](HOWTO.md) | Daily playbook — common QA workflows |
+| [`INSTALL.md`](INSTALL.md) | Detailed install steps (alternative to wizard) |
+| [`docs/architecture.md`](docs/architecture.md) | Layer-by-layer architecture explanation |
+| [`docs/trust-tiering.md`](docs/trust-tiering.md) | Trust tiers — what's auto / gated / why |
+| [`docs/adding-providers.md`](docs/adding-providers.md) | Add new backend (Linear, Notion, etc.) |
+| [`docs/testing.md`](docs/testing.md) | Test strategy + integration test setup |
+| [`examples/jira-testrail.md`](examples/jira-testrail.md) | Full walkthrough on default stack |
+| [`knowledge_base/design_docs/`](knowledge_base/design_docs/) | Architectural decision records |
+
+---
+
+## Default backends (v1.0 ships)
+
+| Category | Provider | Library | Status |
+|---|---|---|---|
+| Ticketing | Jira | `atlassian-python-api` | ✅ implemented |
+| Test management | TestRail | `testrail-api` | ✅ implemented |
+| Documentation | Confluence | `atlassian-python-api` (shared) | ✅ implemented |
+| Chat | Slack | `slack-sdk` | ✅ implemented |
+| Browser | Playwright | Claude Code built-in MCP | ✅ |
+
+Adding a new backend: see [`docs/adding-providers.md`](docs/adding-providers.md).
 
 ---
 
 ## License
 
-MIT — see `LICENSE` file.
+MIT — see [`LICENSE`](LICENSE).
 
 Copyright (c) 2026 Yaroslav Shcherbinsky.
 
 ---
 
-## Contributing
-
-Currently private repo, not accepting external contributions yet. Once public (Phase 5):
-
-- Issue templates for bugs / feature requests
-- PR template
-- `CONTRIBUTING.md` with code of conduct
-- Provider adapter contribution guide (`docs/adding-providers.md`)
-
----
-
 ## Acknowledgements
 
-Built on top of:
+- [Anthropic Claude Code](https://claude.ai/code) — agent runtime
 - [`Anasss/qa-orchestra`](https://github.com/Anasss/qa-orchestra) — 10 generic QA agents (MIT)
-- [`sooperset/mcp-atlassian`](https://github.com/sooperset/mcp-atlassian) — Jira + Confluence MCP (MIT)
-- [`bun913/mcp-testrail`](https://github.com/bun913/mcp-testrail) — TestRail MCP
-- [`korotovsky/slack-mcp-server`](https://github.com/korotovsky/slack-mcp-server) — Slack MCP
-- [Playwright MCP](https://github.com/microsoft/playwright) — browser automation
-- Anthropic [Claude Code](https://claude.ai/code) — agent runtime
+- [`sooperset/mcp-atlassian`](https://github.com/sooperset/mcp-atlassian) — Jira+Confluence MCP reference
+- [`bun913/mcp-testrail`](https://github.com/bun913/mcp-testrail) — TestRail MCP reference
+- [`korotovsky/slack-mcp-server`](https://github.com/korotovsky/slack-mcp-server) — Slack MCP reference
+
+## Status
+
+Currently **PRIVATE** during Phase 1-4 development. Public release decision after Phase 4 validation.
+
+External contributions: not yet accepted. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for future plans.
