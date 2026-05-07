@@ -1,0 +1,29 @@
+# Example Jira provider configuration for qa-cortex.
+#
+# This snippet plugs into the [ticketing.jira] section of your
+# qa-cortex.config.toml file. Tokens come from .env via ${VAR} substitution.
+#
+# Get a Jira API token: https://id.atlassian.com/manage-profile/security/api-tokens
+
+[providers]
+ticketing = "jira"
+
+[ticketing.jira]
+# Your Atlassian Cloud URL (or Server/DC URL)
+url = "https://your-org.atlassian.net"
+
+# Account email (the user creating tickets etc.)
+email = "${JIRA_EMAIL}"
+
+# API token (NOT your password — generate at id.atlassian.com)
+api_token = "${JIRA_API_TOKEN}"
+
+# Project key prefix (used for default search scoping + new ticket creation)
+ticket_prefix = "PROJ"
+default_project_key = "PROJ"
+
+# Optional: Jira Cloud (default) vs Server/DC
+cloud = true
+
+# Optional: SSL verification (default true; set false only for self-signed certs)
+verify_ssl = true
