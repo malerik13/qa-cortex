@@ -1,0 +1,106 @@
+# ============================================================
+# SECURITY — NEVER COMMIT
+# ============================================================
+.env
+.env.local
+.env.*.local
+qa_credentials.md
+*.ovpn
+*.pem
+*.key
+*_token*
+secrets/
+
+# ============================================================
+# Python
+# ============================================================
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ============================================================
+# OS / Editors
+# ============================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ============================================================
+# KB cache — generated, not committed
+# ============================================================
+kb_cache/
+knowledge_base/user_stories.json
+knowledge_base/test_cases.json
+knowledge_base/bugs.json
+knowledge_base/db_schema.md
+knowledge_base/db_schema.json
+knowledge_base/db_schema__*.md
+knowledge_base/db_schema__*.json
+raw_recent_versions.json
+slack_raw.jsonl
+slack_raw/
+
+# ============================================================
+# Per-ticket dumps (temporary)
+# ============================================================
+TRD-*.md
+!templates/TRD-EXAMPLE.md
+
+# ============================================================
+# Logs & temp
+# ============================================================
+*.log
+tmp/
+.cache/
+
+# ============================================================
+# Daily journal — _active.md is per-session scratchpad (not committed).
+# Daily YYYY-MM-DD.md files ARE committed as standup history.
+# ============================================================
+journal/_active.md
+
+# ============================================================
+# QA test screenshots — should live in qa-output/screenshots/, not at root
+# ============================================================
+/*.png
+/*.jpg
+/*.jpeg
+/*.mp4
+/*.mov
+qa-output/screenshots/
+.playwright-mcp/
+
+# ============================================================
+# Per-ticket prep folders (test_prep/TRD-XXXXX/) — generated, transient
+# ============================================================
+test_prep/TRD-*/
+
+# ============================================================
+# Claude Code session artifacts (local-only)
+# ============================================================
+.claude/projects/
+.claude/sessions/
+.claude/worktrees/
+
+# ============================================================
+# .mcp.json — generated per-machine by scripts/install.sh
+# (Claude Code MCP server paths must be absolute; templates/.mcp.json.template
+#  is the committed source of truth, install.sh substitutes PROJECT_ROOT.)
+# ============================================================
+.mcp.json
+
+# Personal data exports (accidental drops)
+8may.json
+*.tg-export.json
+
+# Claude Code runtime
+.claude/scheduled_tasks.lock

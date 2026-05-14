@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "youtrack": {
+      "command": "{{PROJECT_ROOT}}/.venv/bin/python",
+      "args": ["{{PROJECT_ROOT}}/mcp/youtrack/server.py"],
+      "alwaysLoad": true,
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "allure": {
+      "command": "{{PROJECT_ROOT}}/.venv/bin/python",
+      "args": ["{{PROJECT_ROOT}}/mcp/allure/server.py"],
+      "alwaysLoad": true,
+      "env": {
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  }
+}
